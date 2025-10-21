@@ -119,7 +119,9 @@ $$
 \end{bmatrix}
 \bar{y}(t) + 
 \begin{bmatrix}
-0 \\ -\mathbf{M}^{-1}\bar{F}(t)
+0 
+\\ 
+-\mathbf{M}^{-1}\bar{F}(t)
 \end{bmatrix},
 $$
 
@@ -139,7 +141,7 @@ Your task for this project is to build a Turbie module within Python housing the
 
 The functions within the Turbie module should enable the:
 * Importing of the wind file data;
-* Determination of the $C_T$ at each wind speed time step, via interpolation with the wind speed vs. $C_T$ look-up table found in C_T.txt;
+* Determination of the $C_T$ for each **wind speed simulation** based on the **average wind speed**, via interpolation with the wind speed vs. $C_T$ look-up table found in C_T.txt;
 * Building of the Turbie system matrices ($\mathbf{M}$, $\mathbf{K}$ and $\mathbf{C}$) based on the values within the turbie_parameters.txt;
 * Calculation of $\bar{y}'(t)$.
 
@@ -155,7 +157,7 @@ The means and standard deviations of the blade and tower displacements for each 
 
 - Discuss and explain how the means and standard deviations of the blade and tower displacements change with the wind speed and with the TI. 
 
-**Hint:** To get the mean and standard deviation of hte displacements for a given wind speed of a specific TI category, 
+**Hint:** To get the mean and standard deviation of the displacements for a given wind speed of a specific TI category, 
 you need to first compute the time series of displacements using the
 wins peed time series (like 6 m/s with 0.1 TI as stored in 
 "wind_6_ms_TI_0.1.txt"), then compute the mean and standard deviation
