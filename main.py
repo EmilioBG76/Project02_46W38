@@ -143,7 +143,111 @@ if __name__ == "__main__":
         summary_filename = f'summary_statistics_{ti}.txt'
         summary_filepath = os.path.join(output_ti_dir, summary_filename)
         summary_df.to_csv(summary_filepath, index=False, sep='\t')
+        
+        # Sort summary_df by wind_speed before plotting
+        summary_df_sorted = summary_df.sort_values(by='wind_speed').reset_index(drop=True)
 
 # --- Generate plots ---
 
-    # Plot time-marching variation for one case (choose an available one)
+# Plot time-marching variation for one case (choose an available one)
+selected_ti_plot = 'TI_0.10'
+selected_wind_speed_plot = 12.0
+
+output_ti_dir_plot = os.path.join(output_dir, f'wind_{selected_ti_plot}')
+simulation_file_plot = os.path.join(output_ti_dir_plot,
+    f'simulation_results_{selected_wind_speed_plot:.1f}_ms_{selected_ti_plot}.txt')
+
+if os.path.exists(simulation_file_plot):
+    simulation_data = pd.read_csv(simulation_file_plot, sep='\t')
+
+    # Load the corresponding wind data to plot alongside displacements - Corrected TI in filename
+    wind_file_plot = os.path.join(wind_files_dir, f'wind_{selected_ti_plot}',
+    f'wind_{int(selected_wind_speed_plot)}_ms_TI_0.1.txt') # Corrected TI
+    wind_data_plot = pd.read_csv(wind_file_plot, sep=r'\s+', header=0,
+                                names=['time', 'wind_speed']
+                                )
+
+    plt.figure(figsize=(12, 6))
+
+    plt.subplot(2, 1, 1)
+    plt.plot(wind_data_plot['time'], wind_data_plot['wind_speed'], color='red')
+    plt.xlabel('Time [seconds]')
+    plt.ylabel('Wind Speed [m/s]')
+    ti_value_plot = selected_ti_plot.split('_')[-1] # Extract the numerical value from TI_X.XX
+    plt.title(f'Wind Speed Time Series (TI={ti_value_plot}, '
+              f'Wind Speed={selected_wind_speed_plot} [m/s])')
+    plt.grid(True)
+    # Set x-axis limits to match the time data
+    plt.xlim(wind_data_plot['time'].min(), wind_data_plot['time'].max())
+
+    plt.subplot(2, 1, 2)
+    plt.plot(simulation_data['time'], simulation_data['blade_displacement'], 
+     label='Blade Displacement')
+    plt.plot(simulation_data['time'], simulation_data['nacelle_displacement'], 
+     label='Nacelle Displacement')
+    plt.xlabel('Time [seconds]')
+    plt.ylabel('Displacement [m]')
+    ti_value_plot = selected_ti_plot.split('_')[-1] # Extract the numerical value from TI_X.XX
+    plt.title(f'Blade and Nacelle Displacement Time Series (TI={ti_value_plot}, '
+              f'Wind Speed={selected_wind_speed_plot} [m/s])')
+    plt.legend()
+    plt.grid(True)
+    # Set x-axis limits to match the time data
+    plt.xlim(simulation_data['time'].min(), simulation_data['time'].max())
+
+    plt.tight_layout()
+    plt.show()
+else:
+    print(f"Simulation results file not found for plotting time-marching data: "
+          f"{simulation_file_plot}")
+
+
+# Plot mean displacements for all TI categories
+plt.figure(figsize=(12, 6))
+for ti in ti_categories:
+    summary_file = os.path.join(output_dir, f'wind_{ti}', f'summary_statistics_{ti}.txt')
+    if os.path.exists(summary_file):
+        summary_data = pd.read_csv(summary_file, sep='\t')
+        summary_data = summary_data.sort_values(by='wind_speed').reset_index(drop=True)
+        ti_value = ti.split('_')[-1] # Extract the numerical value from TI_X.XX
+        plt.plot(summary_data['wind_speed'], summary_data['blade_mean_displacement'], 'o-', 
+         label=f'Blade (TI={ti_value})')
+        plt.plot(summary_data['wind_speed'], summary_data['nacelle_mean_displacement'], 'x-', 
+         label=f'Nacelle (TI={ti_value})')
+    else:
+        print(f"Summary statistics file not found for plotting mean displacements: "
+              f"{summary_file}")
+
+plt.xlabel('Wind Speed [m/s]')
+plt.ylabel('Mean Displacement [m]')
+plt.title('Mean Displacements for Different TI Categories')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+# Plot standard deviation displacements for all TI categories
+plt.figure(figsize=(12, 6))
+for ti in ti_categories:
+    summary_file = os.path.join(output_dir, f'wind_{ti}', f'summary_statistics_{ti}.txt')
+    if os.path.exists(summary_file):
+        summary_data = pd.read_csv(summary_file, sep='\t')
+        summary_data = summary_data.sort_values(by='wind_speed').reset_index(drop=True)
+        ti_value = ti.split('_')[-1] # Extract the numerical value from TI_X.XX
+        plt.plot(summary_data['wind_speed'], summary_data['blade_std_displacement'], 'o-', 
+         label=f'Blade (TI={ti_value})')
+        plt.plot(summary_data['wind_speed'], summary_data['nacelle_std_displacement'], 'x-', 
+         label=f'Nacelle (TI={ti_value})')
+    else:
+        print(f"Summary statistics file not found for plotting standard deviations: "
+              f"{summary_file}")
+
+plt.xlabel('Wind Speed [m/s]')
+plt.ylabel('Standard Deviation of Displacement [m]')
+plt.title('Standard Deviation of Displacements for Different TI Categories')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+## PENDING ANALYSIS ##
+# Discuss and explain how the means and standard deviations of the blade and tower 
+# displacements change with the wind speed and with the TI.

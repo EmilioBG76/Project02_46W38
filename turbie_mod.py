@@ -72,14 +72,14 @@ def build_system_matrices(parameters_file):
             # col[2] holds the name, col[0] the value            
             parameters[f'{col[2]}'] = float(col[0])         # Create key-value pair in dictionary
 
-    mb = parameters['mb']
-    mn = parameters['mn']
-    mt = parameters['mt']
-    mh = parameters['mh']
-    c1 = parameters['c1']
-    c2 = parameters['c2']
-    k1 = parameters['k1']
-    k2 = parameters['k2']
+    mb = parameters['mb']                                   # Blade mass
+    mn = parameters['mn']                                   # Nacelle mass
+    mt = parameters['mt']                                   # Tower mass
+    mh = parameters['mh']                                   # Hub mass
+    c1 = parameters['c1']                                   # Damping coefficient 1
+    c2 = parameters['c2']                                   # Damping coefficient 2 
+    k1 = parameters['k1']                                   # Stiffness coefficient 1
+    k2 = parameters['k2']                                   # Stiffness coefficient 2
 
 
     # Calculate m1 and m2 for the M matrix
@@ -100,10 +100,10 @@ def state_derivative(t, y, M, C, K, A, rho, CT, wind_data):
     Args:
         t: Current time.
         y: Current state vector [x1, x2, v1, v2].
-        x1: blade displacement
-        x2: nacelle displacement
-        v1: blade velocity
-        v2: nacelle velocity
+        x1: Blade displacement
+        x2: Top point tower displacement
+        v1: Blade velocity
+        v2: Top point tower velocity
         M: Mass matrix.
         C: Damping matrix.
         K: Stiffness matrix.
@@ -114,8 +114,8 @@ def state_derivative(t, y, M, C, K, A, rho, CT, wind_data):
 
     Returns:
         The derivative of the state vector [v1, v2, a1, a2].
-        a1: blade acceleration
-        a2: nacelle acceleration
+        a1: Blade acceleration
+        a2: Top point tower acceleration
     """
     time, wind_speed_series = wind_data                     # Unpack wind data
     # Interpolate wind speed at time t
@@ -139,7 +139,7 @@ def state_derivative(t, y, M, C, K, A, rho, CT, wind_data):
     x_dot_vec = y[2:]                                       # Vector [v1, v2]
 
     # Calculation of the acceleration of the system's degrees of freedom 
-    # (the blades and the nacelle).
+    # (the blades and the tower).
     # M * x_ddot + C * x_dot + K * x = F
     # M * x_ddot = F - C * x_dot - K * x
     # x_ddot = M_inv * (F - C @ x_dot_vec - K @ x_vec)
