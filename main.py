@@ -1,10 +1,10 @@
 # Import necessary libraries
-import os
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy.integrate import solve_ivp
-from scipy.interpolate import interp1d
+import os                                                    # For file path operations
+import pandas as pd                                          # For data handling
+import numpy as np                                           # For numerical operations   
+import matplotlib.pyplot as plt                              # For plotting
+from scipy.integrate import solve_ivp                        # For solving ODEs
+
 
 # Import the turbie_mod module which contains all the necessary functions defined
 import turbie_mod
@@ -59,8 +59,8 @@ if __name__ == "__main__":
         all_wind_speeds = []                                # To store mean wind speeds
         all_blade_means = []                                # To store mean blade displacements
         all_blade_stds = []                                 # To store std. deviation of blade displacements
-        all_nacelle_means = []                              # To store mean nacelle displacements    
-        all_nacelle_stds = []                               # To store std. deviation of nacelle displacements
+        all_tower_means = []                                # To store mean top point tower displacements    
+        all_tower_stds = []                                 # To store std. deviation of top point tower displacements
 
         for wind_file in wind_files:
             file_path = os.path.join(ti_dir, wind_file)
@@ -107,38 +107,38 @@ if __name__ == "__main__":
             # Save simulation results to output file
             # Create a DataFrame to hold results
             results_df = pd.DataFrame({'time': sol.t, 'blade_displacement': sol.y[0], #
-                'nacelle_displacement': sol.y[1],           # Nacelle displacement
+                'tower_displacement': sol.y[1],             # Tower displacement
                 'blade_velocity': sol.y[2],                 # Blade velocity
-                'nacelle_velocity': sol.y[3]                # Nacelle velocity
+                'tower_velocity': sol.y[3]                  # Tower velocity
             })
             output_filename = f'simulation_results_{mean_wind_speed:.1f}_ms_{ti}.txt' 
             output_filepath = os.path.join(output_ti_dir, output_filename)
             
             results_df.to_csv(output_filepath, index=False, sep='\t') # Save with tab separator  
 
-            # Calculate mean and standard deviation of displacements for nacelle and blade
+            # Calculate mean and standard deviation of displacements for tower and blade
             blade_displacement = sol.y[0]
-            nacelle_displacement = sol.y[1]
+            tower_displacement = sol.y[1]
 
             blade_mean = np.mean(blade_displacement)        # Mean blade displacement
             blade_std = np.std(blade_displacement)          # Std. deviation blade displacement
-            nacelle_mean = np.mean(nacelle_displacement)    # Mean nacelle displacement
-            nacelle_std = np.std(nacelle_displacement)      # Std. deviation nacelle displacement
+            tower_mean = np.mean(tower_displacement)        # Mean top point tower displacement
+            tower_std = np.std(tower_displacement)          # Std. deviation top point tower displacement
 
             all_blade_means.append(blade_mean)
             all_blade_stds.append(blade_std)
-            all_nacelle_means.append(nacelle_mean)
-            all_nacelle_stds.append(nacelle_std)
+            all_tower_means.append(tower_mean)
+            all_tower_stds.append(tower_std)
 
         # Save summary statistics for the TI category
         # Create a summary DataFrame to store mean and standard deviation of 
-        # blade and nacelle displacements for each wind speed
+        # blade and top point tower displacements for each wind speed
         summary_df = pd.DataFrame({
             'wind_speed'               : all_wind_speeds,
             'blade_mean_displacement'  : all_blade_means,
             'blade_std_displacement'   : all_blade_stds,
-            'nacelle_mean_displacement': all_nacelle_means,
-            'nacelle_std_displacement' : all_nacelle_stds
+            'tower_mean_displacement'  : all_tower_means,
+            'tower_std_displacement'   : all_tower_stds
         })
         summary_filename = f'summary_statistics_{ti}.txt'
         summary_filepath = os.path.join(output_ti_dir, summary_filename)
@@ -183,12 +183,12 @@ if os.path.exists(simulation_file_plot):
     plt.subplot(2, 1, 2)
     plt.plot(simulation_data['time'], simulation_data['blade_displacement'], 
      label='Blade Displacement')
-    plt.plot(simulation_data['time'], simulation_data['nacelle_displacement'], 
-     label='Nacelle Displacement')
+    plt.plot(simulation_data['time'], simulation_data['tower_displacement'], 
+     label='Tower Displacement')
     plt.xlabel('Time [seconds]')
     plt.ylabel('Displacement [m]')
     ti_value_plot = selected_ti_plot.split('_')[-1] # Extract the numerical value from TI_X.XX
-    plt.title(f'Blade and Nacelle Displacement Time Series (TI={ti_value_plot}, '
+    plt.title(f'Blade and Top Point Tower Displacement Time Series (TI={ti_value_plot}, '
               f'Wind Speed={selected_wind_speed_plot} [m/s])')
     plt.legend()
     plt.grid(True)
@@ -212,8 +212,8 @@ for ti in ti_categories:
         ti_value = ti.split('_')[-1] # Extract the numerical value from TI_X.XX
         plt.plot(summary_data['wind_speed'], summary_data['blade_mean_displacement'], 'o-', 
          label=f'Blade (TI={ti_value})')
-        plt.plot(summary_data['wind_speed'], summary_data['nacelle_mean_displacement'], 'x-', 
-         label=f'Nacelle (TI={ti_value})')
+        plt.plot(summary_data['wind_speed'], summary_data['tower_mean_displacement'], 'x-', 
+         label=f'Tower (TI={ti_value})')
     else:
         print(f"Summary statistics file not found for plotting mean displacements: "
               f"{summary_file}")
@@ -235,8 +235,8 @@ for ti in ti_categories:
         ti_value = ti.split('_')[-1] # Extract the numerical value from TI_X.XX
         plt.plot(summary_data['wind_speed'], summary_data['blade_std_displacement'], 'o-', 
          label=f'Blade (TI={ti_value})')
-        plt.plot(summary_data['wind_speed'], summary_data['nacelle_std_displacement'], 'x-', 
-         label=f'Nacelle (TI={ti_value})')
+        plt.plot(summary_data['wind_speed'], summary_data['tower_std_displacement'], 'x-', 
+         label=f'Tower(TI={ti_value})')
     else:
         print(f"Summary statistics file not found for plotting standard deviations: "
               f"{summary_file}")
@@ -249,5 +249,6 @@ plt.grid(True)
 plt.show()
 
 ## PENDING ANALYSIS ##
+
 # Discuss and explain how the means and standard deviations of the blade and tower 
 # displacements change with the wind speed and with the TI.
