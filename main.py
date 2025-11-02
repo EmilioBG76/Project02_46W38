@@ -15,12 +15,6 @@ output_dir = '/users/cinnamon/downloads/Project02_46W38/outputs'
 ct_lookup_file = '/users/cinnamon/downloads/Project02_46W38/inputs/turbie_inputs/CT.txt'
 parameters_file = '/users/cinnamon/downloads/Project02_46W38/inputs/turbie_inputs/turbie_parameters.txt'
 
-# (Note: Wind files are loaded per TI category later in the main loop)
-wind_files = {} # Dictionary to hold wind file paths
-for file in os.listdir(wind_files_dir):
-    if file.endswith('.txt'):
-        wind_files[file] = os.path.join(wind_files_dir, file)
-        
 # Load system matrices and parameters using functions from turbie_mod
 M, C, K = turbie_mod.build_system_matrices(parameters_file)
 
