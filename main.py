@@ -5,7 +5,6 @@ import numpy as np                                           # For numerical ope
 import matplotlib.pyplot as plt                              # For plotting
 from scipy.integrate import solve_ivp                        # For solving ODEs
 
-
 # Import the turbie_mod module which contains all the necessary functions defined
 import turbie_mod
 
@@ -59,8 +58,8 @@ if __name__ == "__main__":
         all_wind_speeds = []                                # To store mean wind speeds
         all_blade_means = []                                # To store mean blade displacements
         all_blade_stds = []                                 # To store std. deviation of blade displacements
-        all_tower_means = []                                # To store mean top point tower displacements    
-        all_tower_stds = []                                 # To store std. deviation of top point tower displacements
+        all_m2_means = []                                   # To store mean m2 displacements    
+        all_m2_stds = []                                    # To store std. deviation of m2 displacements
 
         for wind_file in wind_files:
             file_path = os.path.join(ti_dir, wind_file)
@@ -81,7 +80,7 @@ if __name__ == "__main__":
 
             # Load wind data using function from turbie_mod
             time, wind_speed_series = turbie_mod.load_wind_data(file_path)
-            # pack wind data for passing to state_derivative
+            # Pack wind data for passing to state_derivative
             wind_data = (time, wind_speed_series) 
 
             # Calculate CT using function from turbie_mod
@@ -107,38 +106,38 @@ if __name__ == "__main__":
             # Save simulation results to output file
             # Create a DataFrame to hold results
             results_df = pd.DataFrame({'time': sol.t, 'blade_displacement': sol.y[0], #
-                'tower_displacement': sol.y[1],             # Tower displacement
+                'm2_displacement': sol.y[1],                # m2 displacement
                 'blade_velocity': sol.y[2],                 # Blade velocity
-                'tower_velocity': sol.y[3]                  # Tower velocity
+                'm2_velocity': sol.y[3]                     # m2 velocity
             })
             output_filename = f'simulation_results_{mean_wind_speed:.1f}_ms_{ti}.txt' 
             output_filepath = os.path.join(output_ti_dir, output_filename)
             
             results_df.to_csv(output_filepath, index=False, sep='\t') # Save with tab separator  
 
-            # Calculate mean and standard deviation of displacements for tower and blade
+            # Calculate mean and standard deviation of displacements for m2 and blade
             blade_displacement = sol.y[0]
-            tower_displacement = sol.y[1]
+            m2_displacement = sol.y[1]
 
             blade_mean = np.mean(blade_displacement)        # Mean blade displacement
             blade_std = np.std(blade_displacement)          # Std. deviation blade displacement
-            tower_mean = np.mean(tower_displacement)        # Mean top point tower displacement
-            tower_std = np.std(tower_displacement)          # Std. deviation top point tower displacement
+            m2_mean = np.mean(m2_displacement)              # Mean m2 displacement
+            m2_std = np.std(m2_displacement)                # Std. deviation m2 displacement
 
             all_blade_means.append(blade_mean)
             all_blade_stds.append(blade_std)
-            all_tower_means.append(tower_mean)
-            all_tower_stds.append(tower_std)
+            all_m2_means.append(m2_mean)
+            all_m2_stds.append(m2_std)
 
         # Save summary statistics for the TI category
         # Create a summary DataFrame to store mean and standard deviation of 
-        # blade and top point tower displacements for each wind speed
+        # blade and m2 displacements for each wind speed
         summary_df = pd.DataFrame({
             'wind_speed'               : all_wind_speeds,
             'blade_mean_displacement'  : all_blade_means,
             'blade_std_displacement'   : all_blade_stds,
-            'tower_mean_displacement'  : all_tower_means,
-            'tower_std_displacement'   : all_tower_stds
+            'm2_mean_displacement'     : all_m2_means,
+            'm2_std_displacement'      : all_m2_stds
         })
         summary_filename = f'summary_statistics_{ti}.txt'
         summary_filepath = os.path.join(output_ti_dir, summary_filename)
@@ -183,12 +182,12 @@ if os.path.exists(simulation_file_plot):
     plt.subplot(2, 1, 2)
     plt.plot(simulation_data['time'], simulation_data['blade_displacement'], 
      label='Blade Displacement')
-    plt.plot(simulation_data['time'], simulation_data['tower_displacement'], 
-     label='Tower Displacement')
+    plt.plot(simulation_data['time'], simulation_data['m2_displacement'], 
+     label='m2 Displacement')
     plt.xlabel('Time [seconds]')
     plt.ylabel('Displacement [m]')
     ti_value_plot = selected_ti_plot.split('_')[-1] # Extract the numerical value from TI_X.XX
-    plt.title(f'Blade and Top Point Tower Displacement Time Series (TI={ti_value_plot}, '
+    plt.title(f'Blade and m2 Displacement Time Series (TI={ti_value_plot}, '
               f'Wind Speed={selected_wind_speed_plot} [m/s])')
     plt.legend()
     plt.grid(True)
@@ -212,8 +211,8 @@ for ti in ti_categories:
         ti_value = ti.split('_')[-1] # Extract the numerical value from TI_X.XX
         plt.plot(summary_data['wind_speed'], summary_data['blade_mean_displacement'], 'o-', 
          label=f'Blade (TI={ti_value})')
-        plt.plot(summary_data['wind_speed'], summary_data['tower_mean_displacement'], 'x-', 
-         label=f'Tower (TI={ti_value})')
+        plt.plot(summary_data['wind_speed'], summary_data['m2_mean_displacement'], 'x-', 
+         label=f'm2 (TI={ti_value})')
     else:
         print(f"Summary statistics file not found for plotting mean displacements: "
               f"{summary_file}")
@@ -235,8 +234,8 @@ for ti in ti_categories:
         ti_value = ti.split('_')[-1] # Extract the numerical value from TI_X.XX
         plt.plot(summary_data['wind_speed'], summary_data['blade_std_displacement'], 'o-', 
          label=f'Blade (TI={ti_value})')
-        plt.plot(summary_data['wind_speed'], summary_data['tower_std_displacement'], 'x-', 
-         label=f'Tower(TI={ti_value})')
+        plt.plot(summary_data['wind_speed'], summary_data['m2_std_displacement'], 'x-', 
+         label=f'm2(TI={ti_value})')
     else:
         print(f"Summary statistics file not found for plotting standard deviations: "
               f"{summary_file}")
@@ -248,7 +247,72 @@ plt.legend()
 plt.grid(True)
 plt.show()
 
-## PENDING ANALYSIS ##
+# This content presented above it has been also commited as a text file called
+# "Discussion_and_explanation.txt"
 
-# Discuss and explain how the means and standard deviations of the blade and tower 
-# displacements change with the wind speed and with the TI.
+## Discussion and explanation on how the means and standard deviations of the blade 
+## and m2 displacements change with the wind speed and with the TI.
+
+print("----------------------------------------------------------------")
+print("Discussion and analysis of means and standard deviations below.")
+print("----------------------------------------------------------------")
+print("\n") # New line for better readability
+print("1.- Mean displacements change with wind speed and TI categories as follows:")
+print("a) Effect of Wind Speed:")
+print("For all TI categories, the mean blade and m2 displacements increase")
+print("with increasing wind speed up to a certain point (around 11-12 [m/s]).")
+print("We can see how with higher wind speeds we see larger forces on the turbine are faced.")
+print("Beyond this point, the mean displacements decrease and I think it's due to")
+print("the pitch control system of the turbine that reduces the aerodynamic forces for the blades.")
+print("\n") # New line for better readability
+print("b) Effect of turbulence intensity (TI):")
+print("For a given wind speed, higher TI category generally leads to larger mean")
+print("blade and m2 displacements. With higher TI we have a turbulent wind,")
+print("so it means we have greater variations in wind speed.")
+print("Producing larger dynamic forces and thus larger mean displacements too.")
+print("\n") # New line for better readability
+print("2.- Standard deviation of displacements change with wind speed and TI as follows:")    
+print("a) Effect of Wind Speed:")
+print("The standard deviation of both, blade and m2 displacements generally")
+print("increases with wind speed up to a certain point (around 11-12 [m/s],") 
+print("and then we see that decreases.")
+print("So this behavior is similar to what it's observed for the mean displacements.")
+print("\n") # New line for better readability)
+print("b) Effect of turbulence intensity (TI):")
+print("Higher TI category results in a larger standard deviations in both blade and")
+print("m2 displacements for all wind speeds.")
+print("This is due to higher turbulence reached with higher wind speed values.")
+print("Larger variations in wind speed are translated into larger variations in")
+print("aerodynamic forces. Turbine structure will oscillate more,")
+print("an so we have the higher standard deviation in displacements.")
+print("\n") # New line for better readability)
+print("In summary, both increasing wind speed (up to a certain point) and increasing")
+print("turbulence intensity lead to larger mean and standard deviations in the blade")
+print("and m2 displacements. This aspect indicates greater structural response and dynamic")
+print("loading on the wind turbine. The pitch control system for the blades plays")
+print("an important role mitigating these effects when we are facing high wind speeds.")  
+
+# To compare the results between TI_0.05 and TI_0.15, let's look at the summary 
+# statistics and the plots generated.
+print("--------------------------------------------------------------------------------")
+print("I have compared results obtained with TI=0.05 and TI=0.15 observing the following:")
+print("\n") # New line for better readability
+print("1.- Mean Displacements:")
+print("When comparing the mean displacements for TI=0.05 and TI=0.15 across different")
+print("wind speeds, it's observed that the mean displacements are generally larger")
+print("for TI=0.15 than for TI=0.05. It can be seen that this difference is more pronounced at higher")
+print("wind speeds before the effect of pitch control becomes to be significant.")
+print("\n") # New line for better readability
+print("2.- Standard Deviation of Displacements:")
+print("The difference in standard deviation of displacements between TI=0.05 and TI=0.15")
+print("is even more significant. The plots obtained show that the standard deviations")
+print("for TI=0.15 are quite a lot higher than for TI=0.05 across all wind speeds values.")
+print("This is the most direct impact of increased turbulence.") 
+print("\n") # New line for better readability
+print("In summary, increasing the Turbulence Intensity from 0.05 to 0.15 leads to:")
+print("A general increase in the mean displacements of both the blade and the m2.")
+print("A much more significant increase in the variability of these displacements,")
+print("as indicated by the higher standard deviations.")
+
+
+
