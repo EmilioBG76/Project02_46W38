@@ -6,48 +6,57 @@
 
 1.- Mean displacements change with wind speed and TI categories as follows:
 a) Effect of Wind Speed:
-For all TI categories, the mean blade and tower displacements increase with increasing wind speed up to a certain point (around 11-12 m/s).
-We can see how with higher wind speeds we see larger forces on the turbine.
-Beyond this point, the mean displacements decrease and it has to be due to
-the pitch control system of the turbine that reduces the aerodynamic forces.
+For all TI categories, the mean blade and tower displacements increase with increasing wind speed 
+up to a certain point (around 11-12 m/s).
+We can also see how with higher wind speeds larger forces on the turbine are faced.
+Beyond this point, the mean displacements decrease and I think it's due to
+the pitch control system of the turbine that reduces the aerodynamic forces for the blades.
 
-b) Effect of TI:
-For a given wind speed, higher TI category generally leads to larger mean blade and tower displacements. With higher TI we have a turbulent wind, with greater variations in wind speed. Producing larger dynamic forces and thus larger mean displacements too.
+b) Effect of turbulence intensity (TI):
+For a given wind speed, higher TI category generally leads to larger mean 
+blade and tower displacements.  With higher TI we have a more turbulent wind, 
+so it means we have greater variations in wind speed. 
+Producing larger dynamic forces and thus larger mean displacements too.
 
 2.- Standard deviation of displacements change with wind speed and TI as follows:    
 a) Effect of Wind Speed:
-The standard deviation of both, blade and tower displacements generally
-increases with wind speed up to a certain point (around 11-12 m/s), and then we see that decreases.
+The standard deviation of both, blade and m2 displacements generally
+increases with wind speed up to a certain point (around 11-12 [m/s]), 
+and then we see that decreases.
 So this behavior is similar to what it's observed for the mean displacements.
 
-b) Effect of TI:")
-Higher TI category leads to a larger standard deviations in both blade and tower displacements for all wind speeds.
-This is due to higher turbulence that it's reached with higher wind speed values.
-The larger variations in wind speed it's translated into larger variations in aerodynamic forces. Turbine structure will oscillate more, an so we have the higher standard deviation in displacements.
+b) Effect of turbulence intensity (TI):
+Higher TI category results in a larger standard deviations in both blade and 
+m2 displacements for all wind speeds.
+This is due to higher turbulence reached with higher wind speed values.
+Larger variations in wind speed are translated into larger variations 
+in aerodynamic forces.  Turbine structure will oscillate more, 
+an so we have the higher standard deviation in displacements.
 
-In summary, both increasing wind speed (up to a certain point) and increasing
-turbulence intensity lead to larger mean and standard deviations in the blade and tower displacements..
-This aspect indicates greater structural response and dynamic loading on the wind turbine. 
-The pitch control system for the blades plays an important role mitigating these effects when high wind speeds are reached.
+In summary, both increasing wind speed (up to a certain point) and increasing 
+turbulence intensity lead to larger means and standard deviations in the blade and
+m2 displacements. This aspect indicates greater structural response and dynamic 
+loading on the wind turbine. The pitch control system for the blades plays 
+an important role mitigating these effects when we are facing high wind speeds.
 
 
-## If we compare the results for TI=0.05 and TI=0.15 values, observing the following: 
+## 
 
 1.- Mean Displacements:
-When comparing the mean displacements for TI=0.05 and TI=0.15 across different wind speeds, it’s observed that the mean displacements are generally larger for TI_0.15 than for TI_0.05. 
-This difference is more pronounced at higher wind speeds before the effect of pitch control becomes relevant.
-This aspect indicates that even the average position of the blade and tower is shifted
-further from their equilibrium position in the presence of higher turbulence.
+When comparing the mean displacements for TI=0.05 and TI=0.15 across different 
+wind speeds, it’s observed that the mean displacements are generally larger 
+for TI=0.15 than for TI=0.05.  It can be seen that this difference is more pronounced at higher 
+wind speeds before the effect of pitch control becomes to be significant.
 
 2.- Standard Deviation of Displacements:
-The difference in standard deviation of displacements between TI_0.05 and TI_0.15
-is even more significant. The plots clearly show that the standard deviations for TI_0.15 are quite a lot higher than for TI_0.05 across all wind speeds values.
-This is the most direct impact of increased turbulence. Higher TI means larger and more frequent fluctuations in wind speed, which in turn cause the turbine structure to oscillate more violently around its mean position.
-The standard deviation show us this variability, and its increase with TI categories.
+The difference in standard deviation of displacements between TI=0.05 and TI=0.15
+is even more significant. The plots obtained show that the standard deviations 
+for TI=0.15 are quite a lot higher than for TI=0.05 across all wind speeds values. 
+This is the most direct impact of increased turbulence.
 
-In summary, increasing the Turbulence Intensity from 0.05 to 0.15 leads to:
-A general increase in the mean displacements of both the blade and the tower.
-A much more significant increase in the variability of these displacements as indicated by the higher standard deviations.
+In summary, increasing the Turbulence Intensity from TI=0.05 to TI=0.15 leads to:
+A general increase in the mean displacements of both the blade and m2.
+A much more significant increase in the variability of these displacements as indicated 
+by the higher standard deviations.
 
-These differences tell us the importance of considering turbulence when designing and analyzing wind turbines. It significantly impacts the structural response and fatigue life of the wind turbine components.
 
