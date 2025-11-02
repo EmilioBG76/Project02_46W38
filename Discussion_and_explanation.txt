@@ -40,7 +40,7 @@ loading on the wind turbine. The pitch control system for the blades plays
 an important role mitigating these effects when we are facing high wind speeds.
 
 
-## 
+## I have compared results obtained with TI=0.05 and TI=0.15 observing the following:
 
 1.- Mean Displacements:
 When comparing the mean displacements for TI=0.05 and TI=0.15 across different 
