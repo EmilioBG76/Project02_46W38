@@ -2,14 +2,17 @@
 
 
 # Main script plottings
-
+First plot includes wind Speed, blade and m2 time series for TI =0.10 and w =12m/s
 <img src="figures/Figure_1.png" alt="Wind Speed, blade and m2 time series for TI=0.10 and w=12[m/s]" width="500"/>
+
+Second plot includes mean displacements for different TI categories
 <img src="figures/Figure_2.png" alt="Mean displacements for different TI categories" width="500"/>
+
+Third plot includes mean displacements for different TI categories
 <img src="figures/Figure_3.png" alt="St. deviation of displacements for different TI categories" width="500"/>
 
 
-# Discussion and explanation on how the means and standard deviations of the blade 
-# and m2 displacements change with the wind speed and with the TI.
+# Discussion and explanation on how the means and standard deviations of the blade and m2 displacements change with the wind speed and with the TI.
 
 1.- Mean displacements change with wind speed and TI categories as follows:
 a. Effect of Wind Speed:
