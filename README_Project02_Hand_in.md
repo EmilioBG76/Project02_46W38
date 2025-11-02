@@ -2,19 +2,19 @@
 
 
 # Main script plottings
-First plot includes wind Speed, blade and m2 time series for TI =0.10 and w =12m/s
+First plot includes wind Speed, blade and m2 time series for TI =0.10 and w =12m/s (Figure_1).
+Second plot includes mean displacements for different TI categories (Figure_2).
+Third plot includes mean displacements for different TI categories (Figure_3).
 <img src="figures/Figure_1.png" alt="Wind Speed, blade and m2 time series for TI=0.10 and w=12[m/s]" width="500"/>
-Second plot includes mean displacements for different TI categories
 <img src="figures/Figure_2.png" alt="Mean displacements for different TI categories" width="500"/>
-Third plot includes mean displacements for different TI categories
 <img src="figures/Figure_3.png" alt="St. deviation of displacements for different TI categories" width="500"/>
 
-# Discussion and explanation on how the means and standard deviations of the blade and m2 displacements change with the wind speed and with the TI.
+# Discussion and explanation on how the means and standard deviations of the blade and m2 displacements change with the wind speed and with the TI observed in the results obtained.
 
 1.- Mean displacements change with wind speed and TI categories as follows:
 a. Effect of Wind Speed:
-For all TI categories, the mean blade and tower displacements increase with increasing wind speed 
-up to a certain point (around 11-12 m/s).
+For all TI categories, the mean blade and tower displacements increase with 
+increasing wind speed up to a certain point (around 11-12 m/s).
 We can also see how with higher wind speeds larger forces on the turbine are faced.
 Beyond this point, the mean displacements decrease and I think it's due to
 the pitch control system of the turbine that reduces the aerodynamic forces for the blades.
@@ -28,8 +28,8 @@ Producing larger dynamic forces and thus larger mean displacements too.
 2.- Standard deviation of displacements change with wind speed and TI as follows:    
 a. Effect of Wind Speed:
 The standard deviation of both, blade and m2 displacements generally
-increases with wind speed up to a certain point (around 11-12 [m/s]), 
-and then we see that decreases.
+increases with wind speed up to a certain point (around 11-12 [m/s]), and then 
+we see that decreases.
 So this behavior is similar to what it's observed for the mean displacements.
 
 b. Effect of turbulence intensity (TI):
@@ -51,8 +51,8 @@ I have compared results obtained with TI=0.05 and TI=0.15 observing the followin
 1.- Mean Displacements:
 When comparing the mean displacements for TI=0.05 and TI=0.15 across different 
 wind speeds, it’s observed that the mean displacements are generally larger 
-for TI=0.15 than for TI=0.05.  It can be seen that this difference is more pronounced at higher 
-wind speeds before the effect of pitch control becomes to be significant.
+for TI=0.15 than for TI=0.05.  It can be seen that this difference is more pronounced 
+at higher wind speeds before the effect of pitch control becomes to be significant.
 
 2.- Standard Deviation of Displacements:
 The difference in standard deviation of displacements between TI=0.05 and TI=0.15
